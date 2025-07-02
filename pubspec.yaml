@@ -25,9 +25,15 @@ dependencies:
 #  country_pickers: ^2.0.0
   cupertino_icons: ^1.0.2
   file_picker: ^4.6.1
-  firebase_auth: ^4.2.6
-  firebase_core: ^2.4.1
+  firebase_core: ^2.32.0
+  firebase_auth: ^4.19.4
   firebase_messaging: ^14.2.1
+  # firebase_auth: ^4.2.6
+  # firebase_core: 2.32.0
+  # firebase_core: ^2.4.1
+  # firebase_core: ^3.15.0
+  # firebase_core: ^2.32.0
+  # firebase_messaging: ^14.2.1
   fl_chart: ^0.63.0
   flutter:
     sdk: flutter

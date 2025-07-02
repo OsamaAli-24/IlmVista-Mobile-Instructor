@@ -15,7 +15,7 @@ import 'package:lms_user_app/utils/dev_util.dart';
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   AuthController({required this.authRepo});
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  late FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isLoading = false;
   bool? _acceptTerms = false;
@@ -164,30 +164,33 @@ class AuthController extends GetxController implements GetxService {
   Future<void> login() async {
     _isLoading = true;
     update();
-    await authRepo.login(
-        email: signInEmailController.text.trim(),
-        password: signInPasswordController.value.text).then((response){
-          appLog(tag: "Login Response", msg: response?.bodyString ?? response);
+    await authRepo
+        .login(
+            email: signInEmailController.text.trim(),
+            password: signInPasswordController.value.text)
+        .then((response) {
+      appLog(tag: "Login Response", msg: response?.bodyString ?? response);
 
-          if (response != null && response.statusCode == 200) {
-            String token = response.body['data']['token'];
-            String profileImage = response.body['data']['profile_image'];
-            authRepo.saveUserToken(token);
-            authRepo.saveProfileImage(profileImage);
-            _instructorProfileImage.value = authRepo.getInstructorProfileImage;
-            signInPasswordController.clear();
-            signInEmailController.clear();
-            Get.offAllNamed(RouteHelper.getMainRoute("0"),);
-          }else{
-            appLog(tag: "Login Response", msg: response);
-            customSnackBar(response?.statusText ?? "Error", isError: true);
-          }
-          _isLoading = false;
-    }).onError((error, stackTrace){
+      if (response != null && response.statusCode == 200) {
+        String token = response.body['data']['token'];
+        String profileImage = response.body['data']['profile_image'];
+        authRepo.saveUserToken(token);
+        authRepo.saveProfileImage(profileImage);
+        _instructorProfileImage.value = authRepo.getInstructorProfileImage;
+        signInPasswordController.clear();
+        signInEmailController.clear();
+        Get.offAllNamed(
+          RouteHelper.getMainRoute("0"),
+        );
+      } else {
+        appLog(tag: "Login Response", msg: response);
+        customSnackBar(response?.statusText ?? "Error", isError: true);
+      }
+      _isLoading = false;
+    }).onError((error, stackTrace) {
       appLog(tag: "Login Error", msg: error);
       _isLoading = false;
     });
-
 
     // if (response != null && response.statusCode == 200) {
     //   String token = response.body['data']['token'];
@@ -270,11 +273,12 @@ class AuthController extends GetxController implements GetxService {
 
   //-------------------------------change password
   Future<void> changeUserPassword() async {
-
     ChangePasswordBody passwordBody = ChangePasswordBody(
-      oldPassword: currentPasswordControllerForChangePasswordScreen.text.toString(),
+      oldPassword:
+          currentPasswordControllerForChangePasswordScreen.text.toString(),
       newPassword: newPasswordControllerForChangePasswordScreen.text.toString(),
-      confirmPassword: confirmPasswordControllerForChangePasswordScreen.text.toString(),
+      confirmPassword:
+          confirmPasswordControllerForChangePasswordScreen.text.toString(),
     );
 
     _hideKeyboard();
@@ -282,7 +286,8 @@ class AuthController extends GetxController implements GetxService {
     update();
     Response? response = await authRepo.changeUserPassword(passwordBody);
 
-    appLog(tag: 'Change Password Response', msg: response!.bodyString ?? response);
+    appLog(
+        tag: 'Change Password Response', msg: response!.bodyString ?? response);
 
     // if (response != null && response.body['success'] == true) {
     //   // Get.toNamed(RouteHelper.newPasswordScreen);
@@ -296,7 +301,6 @@ class AuthController extends GetxController implements GetxService {
     _isLoading = false;
     update();
   }
-
 
   //reset password
   Future<void> resetPassword() async {
@@ -312,7 +316,8 @@ class AuthController extends GetxController implements GetxService {
         otp: otp,
         email: email);
 
-    appLog(tag: 'Reset Password Response', msg: response!.bodyString ?? response);
+    appLog(
+        tag: 'Reset Password Response', msg: response!.bodyString ?? response);
 
     if (response != null && response.body['success'] == true) {
       passwordController.clear();

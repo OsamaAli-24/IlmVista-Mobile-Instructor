@@ -66,8 +66,8 @@ class SignInScreen extends StatelessWidget {
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
             //-----------------------------------------------------------login button
             CustomButton(
-                onPressed: () => controller.login(),
-                // onPressed: () => Get.toNamed(RouteHelper.getMainRoute('0')),
+                // onPressed: () => controller.login(),
+                onPressed: () => Get.toNamed(RouteHelper.getMainRoute('0')),
                 buttonText: 'sign_in'.tr),
             const SizedBox(height: 30),
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),

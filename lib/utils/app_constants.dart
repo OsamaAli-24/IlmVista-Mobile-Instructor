@@ -4,7 +4,7 @@ import 'package:lms_user_app/utils/images.dart';
 class AppConstants {
   static const String APP_NAME = 'FacultyLMS';
   static const double APP_VERSION = 1.0;
-  //static const String BASE_URL = 'http://192.168.1.227/lms/api/';
+  // static const String BASE_URL = 'http://192.168.1.227/lms/api/';
   // static const String BASE_URL = 'http://192.168.1.227/lms/api/';
   // static const String BASE_URL = 'https://faculty.spagreen.net/demo/api/';
   static const String BASE_URL = 'https://faculty.spagreen.net/demo/api/';
@@ -27,7 +27,6 @@ class AppConstants {
   static const String studentFollowings = 'instructor/student-followings/';
   //----------------------------------------------------------------
 
-
   static const String configUrl = 'configs';
   static const String loginUrl = 'login';
   static const String socialLoginUrl = 'social-login';
@@ -48,7 +47,8 @@ class AppConstants {
   static const String latestCourse = 'latest-courses';
   static const String instructorProfile = 'instructor/profile';
   static const String instructorCourseList = 'instructor/courses';
-  static const String instructorPendingCourseList = 'instructor/pending-courses';
+  static const String instructorPendingCourseList =
+      'instructor/pending-courses';
   static const String instructorStudentList = 'instructor/students';
   static const String followUnfollow = 'user/follow-unfollow';
   //organization

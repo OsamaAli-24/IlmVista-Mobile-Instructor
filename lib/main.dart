@@ -1,14 +1,19 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lms_user_app/controller/auth_controller.dart';
 import 'package:lms_user_app/core/service/color_picker_service.dart';
+import 'package:lms_user_app/repository/auth_repo.dart';
 import 'package:lms_user_app/utils/app_constants.dart';
 import 'package:lms_user_app/utils/custom_scroll_bahavior.dart';
+import 'package:lms_user_app/firebase_options.dart';
 import 'package:lms_user_app/utils/messages.dart';
 import 'controller/localization_controller.dart';
 import 'controller/splash_controller.dart';
@@ -23,13 +28,37 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await GetStorage.init();
   HttpOverrides.global = MyHttpOverrides();
   await FlutterDownloader.initialize();
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  const  String testBaseUrl = String.fromEnvironment('BASE_URL', 
+      defaultValue: AppConstants.BASE_URL); // Fallback to default
 
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    if (kDebugMode) {
+      print('✅ Firebase initialized');
+    }
+  } catch (e) {
+    print('❌ Firebase init error: $e');
+  }
+
+//   if (kDebugMode) {
+//   await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+// }
+
+  // Move AuthController injection here, after Firebase is ready
+  Get.lazyPut<AuthController>(() => AuthController(
+      authRepo:
+          AuthRepo(sharedPreferences: Get.find(), apiClient: Get.find())));
+  // Initialize GetX dependencies after Firebase
+  Get.lazyPut<AuthRepo>(
+      () => AuthRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
   await Get.putAsync<ColorPickerService>(() => ColorPickerService().init());
 
   Map<String, Map<String, String>> languages = await di.init();
@@ -64,6 +93,7 @@ class MyApp extends StatelessWidget {
             //   dragDevices: {PointerDeviceKind.mouse, PointerDeviceKind.touch},
             // ),
             //scrollBehavior: CustomScrollBehavior(),
+
             initialBinding: InitialBinding(),
             theme: themeController.darkTheme ? dark : light,
             locale: localizeController.locale,
