@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "226501982766",
+    "project_id": "lms-instructor-f99fb",
+    "storage_bucket": "lms-instructor-f99fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226501982766:android:760b20e89d320a0444bdbf",
+        "android_client_info": {
+          "package_name": "com.spagreen.lms.instructor.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226501982766-mone067n4i9qojho991mf3m9kjgj03t0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-HKvpAdZWA5DzQNxhNhkOPXRPDYgxvMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226501982766-mone067n4i9qojho991mf3m9kjgj03t0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
