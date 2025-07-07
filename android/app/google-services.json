@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "226501982766",
-    "project_id": "lms-instructor-f99fb",
-    "storage_bucket": "lms-instructor-f99fb.appspot.com"
+    "project_number": "400787893773",
+    "project_id": "ilmvista-instructor",
+    "storage_bucket": "ilmvista-instructor.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226501982766:android:760b20e89d320a0444bdbf",
+        "mobilesdk_app_id": "1:400787893773:android:dff5ad2c531b627e3def44",
         "android_client_info": {
           "package_name": "com.spagreen.lms.instructor.app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "226501982766-mone067n4i9qojho991mf3m9kjgj03t0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA-HKvpAdZWA5DzQNxhNhkOPXRPDYgxvMQ"
+          "current_key": "AIzaSyCMtqPaOMoRBjquEITk7ASDydsCBNOdNSM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "226501982766-mone067n4i9qojho991mf3m9kjgj03t0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

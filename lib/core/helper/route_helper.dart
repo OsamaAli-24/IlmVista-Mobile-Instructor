@@ -9,6 +9,7 @@ import 'package:lms_user_app/feature/auth/change_password/change_password_screen
 import 'package:lms_user_app/feature/auth/email_verification_screen.dart';
 import 'package:lms_user_app/feature/auth/forgot_password/forgot_password_screen.dart';
 import 'package:lms_user_app/feature/auth/forgot_password/otp_verification_screen.dart';
+import 'package:lms_user_app/feature/auth/sign_up_screen.dart';
 import 'package:lms_user_app/feature/bookDetails/book_details_screen.dart';
 import 'package:lms_user_app/feature/bookStore/book_store_screen.dart';
 import 'package:lms_user_app/controller/splash_controller.dart';
@@ -167,6 +168,7 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: splash, page: () => const SplashScreen()),
+    GetPage(name: signUp, page: () => const SignUpScreen()),
     GetPage(name: signIn, page: () => const SignInScreen()),
     GetPage(name: main, page: () => const MainScreen(pageIndex: 0)),
     GetPage(

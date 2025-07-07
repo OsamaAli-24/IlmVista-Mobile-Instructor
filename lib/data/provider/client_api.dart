@@ -24,7 +24,8 @@ class ApiClient extends GetxService {
   late Map<String, String> _mainHeaders;
 
   //remove this token when app ready to publish
-  String testToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2ZhY3VsdHkuc3BhZ3JlZW4ubmV0L2RlbW8vYXBpL2xvZ2luIiwiaWF0IjoxNzAwMzkwMDUwLCJuYmYiOjE3MDAzOTAwNTAsImp0aSI6Imhja1dzZXdZQXdGdk1NVFoiLCJzdWIiOiIyIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.qVf4-uvtGsrsT1SLQLPVepzihUlrca-KEs3JvNB7Mtw';
+  String testToken =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2ZhY3VsdHkuc3BhZ3JlZW4ubmV0L2RlbW8vYXBpL2xvZ2luIiwiaWF0IjoxNzAwMzkwMDUwLCJuYmYiOjE3MDAzOTAwNTAsImp0aSI6Imhja1dzZXdZQXdGdk1NVFoiLCJzdWIiOiIyIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.qVf4-uvtGsrsT1SLQLPVepzihUlrca-KEs3JvNB7Mtw';
 
   ApiClient({required this.appBaseUrl, required this.sharedPreferences}) {
     token = sharedPreferences.getString(AppConstants.token) ?? testToken;
@@ -53,8 +54,7 @@ class ApiClient extends GetxService {
 
   Future<Response> getData(String uri,
       {Map<String, dynamic>? query, Map<String, String>? headers}) async {
-
-    appLog(tag: "GET URL", msg: appBaseUrl!+uri);
+    appLog(tag: "GET URL", msg: appBaseUrl! + uri);
 
     try {
       Http.Response response = await Http.get(
@@ -70,11 +70,10 @@ class ApiClient extends GetxService {
 
   Future<Response> postData(String uri, dynamic body,
       {Map<String, String>? headers}) async {
-
-    appLog(tag: "POST URL", msg: appBaseUrl!+uri);
+    appLog(tag: "POST URL", msg: appBaseUrl! + uri);
 
     Http.Response response = await Http.post(
-      Uri.parse(appBaseUrl! + uri),
+      Uri.parse("${appBaseUrl!}$uri?key=I9S9YJ9GQDR9MFGX"),
       body: jsonEncode(body),
       headers: headers ?? _mainHeaders,
     ).timeout(Duration(seconds: timeoutInSeconds));

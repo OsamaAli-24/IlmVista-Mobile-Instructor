@@ -66,13 +66,38 @@ class SignInScreen extends StatelessWidget {
             const SizedBox(height: Dimensions.paddingSizeExtraLarge),
             //-----------------------------------------------------------login button
             CustomButton(
-                // onPressed: () => controller.login(),
-                onPressed: () => Get.toNamed(RouteHelper.getMainRoute('0')),
+                onPressed: () => controller.login(),
+                // onPressed: () => Get.toNamed(RouteHelper.getMainRoute('0')),
                 buttonText: 'sign_in'.tr),
-            const SizedBox(height: 30),
-            const SizedBox(height: Dimensions.paddingSizeExtraLarge),
-            //continueButton(context),
+            // const SizedBox(height: 30),
             // const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+            // continueButton(context),
+            // const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+            const SizedBox(
+              height: 20,
+            ),
+            // const SizedBox(height: Dimensions.paddingSizeExtraLarge),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Don\'t have an account?',
+                  // style: poppinsBold.copyWith(
+                  //     fontSize: Dimensions.fontSizeSmall,
+                  //     color: Theme.of(context).textTheme.bodyLarge!.color!),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Get.toNamed(RouteHelper.signUp);
+                    },
+                    child: Text(
+                      'sign_up'.tr,
+                      // style: poppinsBold.copyWith(
+                      //     fontSize: Dimensions.fontSizeSmall,
+                      //     color: Theme.of(context).textTheme.bodyLarge!.color!),
+                    ))
+              ],
+            )
           ],
         ),
       ),

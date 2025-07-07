@@ -24,9 +24,9 @@ class SignUpBody {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['first_name'] = fName;
-    data['last_name'] = lName;
-    data['email'] = email;
+    data['first_name'] = fName?.trim();
+    data['last_name'] = lName?.trim();
+    data['email'] = email?.trim();
     data['password'] = password;
     data['password_confirmation'] = confirmPassword;
     return data;

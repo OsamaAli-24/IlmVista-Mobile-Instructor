@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -29,12 +28,14 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   await GetStorage.init();
   HttpOverrides.global = MyHttpOverrides();
   await FlutterDownloader.initialize();
 
-  const  String testBaseUrl = String.fromEnvironment('BASE_URL', 
+  const String testBaseUrl = String.fromEnvironment('BASE_URL',
       defaultValue: AppConstants.BASE_URL); // Fallback to default
 
   try {

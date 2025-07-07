@@ -7,8 +7,10 @@ class AppConstants {
   // static const String BASE_URL = 'http://192.168.1.227/lms/api/';
   // static const String BASE_URL = 'http://192.168.1.227/lms/api/';
   // static const String BASE_URL = 'https://faculty.spagreen.net/demo/api/';
-  static const String BASE_URL = 'https://faculty.spagreen.net/demo/api/';
-
+  static const String BASE_URL = 'https://faculty.spagreen.net/demo/api/';// This one is working......
+  // static const String BASE_URL = 'https://ilmvista.com/demo/api/';
+  // static const String BASE_URL ='https://yooriapi.spagreen.net/api/';
+  
   //-------------------------------------------------------endpoints
   static const String instructorLogin = 'instructor-login';
   static const String instructorDashboard = 'instructor/dashboard';

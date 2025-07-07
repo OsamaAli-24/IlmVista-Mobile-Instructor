@@ -9,6 +9,8 @@ import 'package:lms_user_app/core/helper/route_helper.dart';
 import 'package:lms_user_app/data/model/change_password_body.dart';
 import 'package:lms_user_app/data/model/signup_body.dart';
 import 'package:lms_user_app/data/model/social_login_body.dart';
+import 'package:lms_user_app/feature/auth/sign_in_screen.dart';
+import 'package:lms_user_app/feature/auth/sign_up_screen.dart';
 import 'package:lms_user_app/repository/auth_repo.dart';
 import 'package:lms_user_app/utils/dev_util.dart';
 
@@ -123,33 +125,107 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
+  // Registration with api
+  // Future<void> registration() async {
+  //   _hideKeyboard();
+  //   _isLoading = true;
+  //   update();
+  //   SignUpBody signUpBody = SignUpBody(
+  //       fName: firstNameController.value.text,
+  //       lName: lastNameController.value.text,
+  //       email: emailController.value.text,
+  //       password: passwordController.value.text,
+  //       confirmPassword: confirmPasswordController.value.text);
+  //   if (!_isValidPassword()) {
+  //     customSnackBar('password_missmatch'.tr);
+  //     _isLoading = false;
+  //     update();
+  //     return;
+  //   }
+  //   Response? response = await authRepo.registration(signUpBody);
+  //   debugPrint("🔼 SignUpBody: ${signUpBody.toJson()}");
+  //   if (response != null && response.statusCode == 200) {
+  //     if (response.body['success'] == true) {
+  //       Get.toNamed(RouteHelper.emailVerificationScreen,
+  //           arguments: emailController.value.text);
+  //     }
+
+  //     customSnackBar(response.body['message'], isError: false);
+  //   } else {
+  //     // customSnackBar(response?.body['data']['email'][0].toString() ??
+  //     //     response?.body['data']['password'][0].toString());
+  //     try {
+  //       final data = response?.body['data'];
+  //       String errorMessage = 'Registration failed';
+
+  //       if (data != null && data is Map<String, dynamic>) {
+  //         if (data['email'] is List && data['email'].isNotEmpty) {
+  //           errorMessage = data['email'][0];
+  //         } else if (data['email'] is String) {
+  //           errorMessage = data['email'];
+  //         } else if (data['password'] is List && data['password'].isNotEmpty) {
+  //           errorMessage = data['password'][0];
+  //         } else if (data['password'] is String) {
+  //           errorMessage = data['password'];
+  //         }
+  //       }
+
+  //       customSnackBar(errorMessage);
+  //       debugPrint("🔽 Response: ${response?.body}");
+  //       debugPrint("🔽 Status: ${response?.statusCode}");
+  //     } catch (e) {
+  //       customSnackBar('Something went wrong');
+  //       debugPrint('❌ registration error parsing: $e');
+  //     }
+  //   }
+  //   _isLoading = false;
+  //   update();
+  // }
+
+// Registration with Firebase
   Future<void> registration() async {
     _hideKeyboard();
     _isLoading = true;
     update();
-    SignUpBody signUpBody = SignUpBody(
-        fName: firstNameController.value.text,
-        lName: lastNameController.value.text,
-        email: emailController.value.text,
-        password: passwordController.value.text,
-        confirmPassword: confirmPasswordController.value.text);
-    if (!_isValidPassword()) {
-      customSnackBar('password_missmatch'.tr);
-      _isLoading = false;
-      update();
-      return;
-    }
-    Response? response = await authRepo.registration(signUpBody);
-    if (response != null && response.statusCode == 200) {
-      if (response.body['success'] == true) {
-        Get.toNamed(RouteHelper.emailVerificationScreen,
-            arguments: emailController.value.text);
+
+    try {
+      if (!_isValidPassword()) {
+        customSnackBar('Password mismatch');
+        _isLoading = false;
+        update();
+        return;
       }
-      customSnackBar(response.body['message'], isError: false);
-    } else {
-      customSnackBar(response?.body['data']['email'][0].toString() ??
-          response?.body['data']['password'][0].toString());
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Optional: update user profile
+      await userCredential.user?.updateDisplayName(
+        '${firstNameController.text} ${lastNameController.text}',
+      );
+
+      // Navigate to your dashboard or verification screen
+      // Get.toNamed(RouteHelper.emailVerificationScreen,
+      //     arguments: emailController.text.trim());
+      Get.to(const SignInScreen());
+
+      customSnackBar("Registration successful", isError: false);
+    } on FirebaseAuthException catch (e) {
+      String error = 'Registration failed';
+      if (e.code == 'email-already-in-use') {
+        error = 'Email already in use';
+      } else if (e.code == 'weak-password') {
+        error = 'Weak password';
+      }
+      customSnackBar(error);
+    } catch (e) {
+      print('Unexpected Error: $e'); // ← add this
+      customSnackBar('Something went wrong');
     }
+
     _isLoading = false;
     update();
   }
@@ -161,47 +237,78 @@ class AuthController extends GetxController implements GetxService {
     return false;
   }
 
+  //Login with api
+  // Future<void> login() async {
+  //   _isLoading = true;
+  //   update();
+  //   await authRepo
+  //       .login(
+  //           email: signInEmailController.text.trim(),
+  //           password: signInPasswordController.value.text)
+  //       .then((response) {
+  //     appLog(tag: "Login Response", msg: response?.bodyString ?? response);
+
+  //     if (response != null && response.statusCode == 200) {
+  //       String token = response.body['data']['token'];
+  //       String profileImage = response.body['data']['profile_image'];
+  //       authRepo.saveUserToken(token);
+  //       authRepo.saveProfileImage(profileImage);
+  //       _instructorProfileImage.value = authRepo.getInstructorProfileImage;
+  //       signInPasswordController.clear();
+  //       signInEmailController.clear();
+  //       Get.offAllNamed(
+  //         RouteHelper.getMainRoute("0"),
+  //       );
+  //     } else {
+  //       appLog(tag: "Login Response", msg: response);
+  //       customSnackBar(response?.statusText ?? "Error", isError: true);
+  //     }
+  //     _isLoading = false;
+  //   }).onError((error, stackTrace) {
+  //     appLog(tag: "Login Error", msg: error);
+  //     _isLoading = false;
+  //   });
+
+  //   // if (response != null && response.statusCode == 200) {
+  //   //   String token = response.body['data']['token'];
+  //   //   authRepo.saveUserToken(token);
+  //   //   signInPasswordController.clear();
+  //   //   signInEmailController.clear();
+  //   //   Get.offAllNamed(RouteHelper.getMainRoute("0"));
+  //   // } else {
+  //   //   customSnackBar(response?.statusText ?? "Error", isError: true);
+  //   // }
+
+  //   update();
+  // }
+
+  //Login with Firebase...
   Future<void> login() async {
     _isLoading = true;
     update();
-    await authRepo
-        .login(
-            email: signInEmailController.text.trim(),
-            password: signInPasswordController.value.text)
-        .then((response) {
-      appLog(tag: "Login Response", msg: response?.bodyString ?? response);
 
-      if (response != null && response.statusCode == 200) {
-        String token = response.body['data']['token'];
-        String profileImage = response.body['data']['profile_image'];
-        authRepo.saveUserToken(token);
-        authRepo.saveProfileImage(profileImage);
-        _instructorProfileImage.value = authRepo.getInstructorProfileImage;
-        signInPasswordController.clear();
-        signInEmailController.clear();
-        Get.offAllNamed(
-          RouteHelper.getMainRoute("0"),
-        );
-      } else {
-        appLog(tag: "Login Response", msg: response);
-        customSnackBar(response?.statusText ?? "Error", isError: true);
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: signInEmailController.text.trim(),
+        password: signInPasswordController.text.trim(),
+      );
+
+      // Navigate to main screen
+      Get.offAllNamed(RouteHelper.getMainRoute("0"));
+    } on FirebaseAuthException catch (e) {
+      String error = 'Login failed';
+      if (e.code == 'user-not-found') {
+        error = 'No user found for this email';
+      } else if (e.code == 'wrong-password') {
+        error = 'Incorrect password';
       }
-      _isLoading = false;
-    }).onError((error, stackTrace) {
-      appLog(tag: "Login Error", msg: error);
-      _isLoading = false;
-    });
+      customSnackBar(error);
+    } catch (e) {
+      customSnackBar('Something went wrong');
+    }
 
-    // if (response != null && response.statusCode == 200) {
-    //   String token = response.body['data']['token'];
-    //   authRepo.saveUserToken(token);
-    //   signInPasswordController.clear();
-    //   signInEmailController.clear();
-    //   Get.offAllNamed(RouteHelper.getMainRoute("0"));
-    // } else {
-    //   customSnackBar(response?.statusText ?? "Error", isError: true);
-    // }
-
+    _isLoading = false;
     update();
   }
 
